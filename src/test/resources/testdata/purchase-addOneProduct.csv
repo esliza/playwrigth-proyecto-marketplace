@@ -1,0 +1,3 @@
+searchQuery,productText,address,paymentMethod,expected,expectedMessage
+Gase,Gaseosa,Depa 123,Yape,success,Compra realizada con éxito
+Aceites,Aceites,Depa 456,Cash,success,Compra realizada con éxito

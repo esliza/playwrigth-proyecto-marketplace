@@ -1,0 +1,4 @@
+name,email,telefono,password,confirmPassword,expected,expectedMessage
+Usuario Automatizado,user{timestamp}@example.com,1234567890,securePass1,securePass1,success,Registro exitoso
+Usuario Automatizado,user2{timestamp}@example.com,0987654321,securePass2,securePass2,success,Registro exitoso
+Usuario Automatizado,dup{timestamp}@example.com,1234567890,securePass1,securePass1,failure,El correo ya está registrado

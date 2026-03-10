@@ -1,0 +1,2 @@
+productUrl,badgeText,address,paymentMethod,expected,expectedMessage
+http://localhost:5173/productos/cbf04944-07aa-4ee6-8b7d-eb4b521aca9c,Por agotarse,Depa 123,Yape,success,Compra realizada con éxito

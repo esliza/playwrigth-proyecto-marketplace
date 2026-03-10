@@ -1,0 +1,6 @@
+com\example\screenplay\tests\BaseTest.class
+com\example\screenplay\tests\LoginTest.class
+com\example\screenplay\tests\TestResultWatcher.class
+com\example\screenplay\tests\RegisterTest.class
+com\example\screenplay\utils\CsvDataReader.class
+com\example\screenplay\tests\PurchaseFlowTest.class

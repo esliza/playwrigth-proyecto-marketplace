@@ -1,0 +1,3 @@
+productIdentifier,quantity,expected,expectedMessage
+"Producto Estado 1772495193655",10,success,Carrito vacío
+"arroz paisana",5,success,Carrito vacío

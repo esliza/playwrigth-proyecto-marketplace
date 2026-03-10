@@ -1,0 +1,4 @@
+email,password,expected
+mairafe@gmail.com,Password123!,success
+another-success@example.com,RightPass1!,failure
+user2@example.com,AnotherPass456$,failure

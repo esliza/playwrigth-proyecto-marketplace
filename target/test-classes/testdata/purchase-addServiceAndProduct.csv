@@ -1,0 +1,3 @@
+productQuery,productText,serviceQuery,serviceText,address,paymentMethod,expected,expectedMessage
+Azucar,Azucar 1k,Tomatodos,Tomatodos,Depa 123,Yape,success,Compra realizada con éxito
+Pepitas,Pepitas,serwr,serwr,Depa 789,Cash,success,Compra realizada con éxito
