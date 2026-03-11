@@ -3,6 +3,7 @@ name: Run Automation Tests
 on:
   push:
     branches: [ main ]
+  pull_request:
 
 jobs:
 
@@ -35,8 +36,8 @@ jobs:
       - name: Install Playwright
         run: mvn exec:java -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install"
 
-      - name: Run tests
-          run: mvn -B clean test -Dplaywright.headless=true -Dplaywright.enableRecording=false
+      - name: Run tests (headless)
+        run: mvn -B clean test -Dplaywright.headless=true -Dplaywright.enableRecording=false
 
       - name: Upload Allure Results
         if: always()
