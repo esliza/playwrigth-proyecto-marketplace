@@ -1,5 +1,6 @@
 package com.example.screenplay.pages;
 
+import com.example.screenplay.config.Config;
 import com.microsoft.playwright.Page;
 
 public class SearchPage {
@@ -10,7 +11,7 @@ public class SearchPage {
     }
 
     public void openHome() {
-        page.navigate("http://localhost:5173");
+        page.navigate(Config.baseUrl());
     }
 
     public void search(String query) {
@@ -31,7 +32,7 @@ public class SearchPage {
                 return;
             }
             if (id.startsWith("/")) {
-                page.navigate("http://localhost:5173" + id);
+                page.navigate(Config.baseUrl() + id);
                 return;
             }
         } catch (Exception ignored) {
@@ -55,7 +56,7 @@ public class SearchPage {
 
         // Last resort: navigate to product detail assuming standard route
         try {
-            page.navigate("http://localhost:5173/productos/" + id);
+            page.navigate(Config.baseUrl() + "/productos/" + id);
         } catch (Exception ignored) {
         }
     }

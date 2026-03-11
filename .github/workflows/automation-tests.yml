@@ -9,6 +9,9 @@ jobs:
 
   test:
 
+    env:
+      BASE_URL: https://condominio-marketplace.netlify.app
+
     runs-on: ubuntu-latest
 
     steps:
@@ -36,8 +39,41 @@ jobs:
       - name: Install Playwright
         run: mvn exec:java -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install"
 
+      - name: Set up Node.js (for frontend)
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install frontend deps (if present)
+        run: |
+          if [ -d "frontend/vite-project" ]; then
+            echo "Installing frontend dependencies (frontend/vite-project)..."
+            cd frontend/vite-project
+            npm ci
+          else
+            echo "No frontend/vite-project directory found; skipping frontend install"
+          fi
+
+      - name: Start frontend (background) if present
+        run: |
+          if [ -d "frontend/vite-project" ]; then
+            echo "Starting frontend (frontend/vite-project) in background..."
+            cd frontend/vite-project
+            npm run dev &>/dev/null &
+          else
+            echo "No frontend/vite-project directory found; skipping frontend start"
+          fi
+
+      - name: Wait for frontend to be ready
+        run: |
+          if [ -d "frontend" ]; then
+            npx wait-on ${BASE_URL} --timeout 60000
+          else
+            echo "No frontend directory; nothing to wait for"
+          fi
+
       - name: Run tests (headless)
-        run: mvn -B clean test -Dplaywright.headless=true -Dplaywright.enableRecording=false
+        run: mvn -B clean test -Dplaywright.headless=true -Dplaywright.enableRecording=false -DbaseUrl=${BASE_URL}
 
       - name: Upload Allure Results
         if: always()

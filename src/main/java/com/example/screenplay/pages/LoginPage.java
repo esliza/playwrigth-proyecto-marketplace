@@ -1,10 +1,10 @@
 package com.example.screenplay.pages;
 
+import com.example.screenplay.config.Config;
 import com.microsoft.playwright.Page;
 
 public class LoginPage {
     private final Page page;
-    private static final String URL = "http://localhost:5173/login";
     private static final String SELECTOR_EMAIL = "input[name=\"correo\"]";
     private static final String SELECTOR_PASSWORD = "input[name=\"contrasena\"]";
     private static final String SELECTOR_SUBMIT = "button[type=submit]";
@@ -14,11 +14,11 @@ public class LoginPage {
     }
 
     public String url() {
-        return URL;
+        return Config.baseUrl() + "/login";
     }
 
     public void open() {
-        page.navigate(URL);
+        page.navigate(url());
     }
 
     public void fillEmail(String email) {

@@ -1,17 +1,17 @@
 package com.example.screenplay.pages;
 
+import com.example.screenplay.config.Config;
 import com.microsoft.playwright.Page;
 
 public class HomePage {
     private final Page page;
-    public final String url = "http://localhost:5173/";
 
     public HomePage(Page page) {
         this.page = page;
     }
 
     public void open() {
-        page.navigate(url);
+        page.navigate(Config.baseUrl() + "/");
     }
 
     public void clickRegister() {
