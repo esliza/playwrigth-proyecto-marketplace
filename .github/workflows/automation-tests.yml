@@ -32,8 +32,8 @@ jobs:
       - name: Install Maven dependencies (no tests)
         run: mvn -B clean install -DskipTests
 
-      - name: Install Playwright browsers
-        run: mvn -B exec:java -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install"
+      - name: Install Playwright
+        run: mvn exec:java -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install --with-deps"
 
       - name: Run tests
         run: mvn -B clean test -Precording
