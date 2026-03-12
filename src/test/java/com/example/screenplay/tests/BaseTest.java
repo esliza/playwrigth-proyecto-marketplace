@@ -77,7 +77,10 @@ public class BaseTest {
         }
 
         String displayName = (testInfo != null) ? testInfo.getDisplayName() : null;
-        usePlaywright = PlaywrightManager.startChrome(false, displayName); // headless true by default
+        // Respect the `playwright.headless` system property instead of forcing headed
+        // runs
+        boolean headless = Boolean.parseBoolean(System.getProperty("playwright.headless", "true"));
+        usePlaywright = PlaywrightManager.startChrome(headless, displayName);
         estefany = new Actor("Estefany");
         estefany.can(usePlaywright);
         // use official Allure steps; no StepLogger fallback
