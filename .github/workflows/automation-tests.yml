@@ -40,16 +40,25 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
+          # Install common Playwright dependencies; try best-effort for libvpx flavor
           sudo apt-get install -y \
             libwoff1 \
-            libvpx7 \
             libevent-2.1-7 \
             libopus0 \
             libgstreamer1.0-0 \
             libgstreamer-plugins-base1.0-0 \
             libsecret-1-0 \
             libhyphen0 \
-            libx264-dev
+            libx264-dev || true
+
+          # libvpx version varies between Ubuntu images. Prefer libvpx7, fallback to libvpx6 or libvpx-dev
+          if apt-cache show libvpx7 >/dev/null 2>&1; then
+            sudo apt-get install -y libvpx7
+          elif apt-cache show libvpx6 >/dev/null 2>&1; then
+            sudo apt-get install -y libvpx6
+          else
+            sudo apt-get install -y libvpx-dev || true
+          fi
 
       - name: Install Playwright
         run: mvn exec:java -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install"
