@@ -5,9 +5,27 @@ import com.microsoft.playwright.Page;
 
 public class LoginPage {
     private final Page page;
-    private static final String SELECTOR_EMAIL = "input[name=\"correo\"]";
-    private static final String SELECTOR_PASSWORD = "input[name=\"contrasena\"]";
-    private static final String SELECTOR_SUBMIT = "button[type=submit]";
+    private static final String[] SELECTORS_EMAIL = new String[] {
+            "input[name=\"correo\"]",
+            "input[name=\"email\"]",
+            "input[type=\"email\"]",
+            "input[placeholder*='Correo']",
+            "input[placeholder*='Email']",
+            "#email",
+    };
+    private static final String[] SELECTORS_PASSWORD = new String[] {
+            "input[name=\"contrasena\"]",
+            "input[name=\"password\"]",
+            "input[type=\"password\"]",
+            "input[placeholder*='Contraseña']",
+            "#password",
+    };
+    private static final String[] SELECTORS_SUBMIT = new String[] {
+            "button[type=submit]",
+            "button:has-text('Ingresar')",
+            "button:has-text('Iniciar sesión')",
+            "button:has-text('Entrar')",
+    };
 
     public LoginPage(Page page) {
         this.page = page;
@@ -18,18 +36,64 @@ public class LoginPage {
     }
 
     public void open() {
-        page.navigate(url());
+        try {
+            page.navigate(url(), new com.microsoft.playwright.Page.NavigateOptions().setTimeout(60000));
+        } catch (Exception e) {
+            try {
+                Thread.sleep(2000);
+                page.navigate(url(), new com.microsoft.playwright.Page.NavigateOptions().setTimeout(60000));
+            } catch (Exception ex) {
+                throw new RuntimeException("Failed to navigate to login page: " + url(), ex);
+            }
+        }
     }
 
     public void fillEmail(String email) {
-        page.fill(SELECTOR_EMAIL, email);
+        for (String sel : SELECTORS_EMAIL) {
+            try {
+                com.microsoft.playwright.Locator locator = page.locator(sel);
+                if (locator.count() > 0) {
+                    locator.first().waitFor(new com.microsoft.playwright.Locator.WaitForOptions()
+                            .setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE).setTimeout(10000));
+                    locator.first().fill(email);
+                    return;
+                }
+            } catch (Exception ignored) {
+            }
+        }
+        // fallback
+        page.fill(SELECTORS_EMAIL[0], email);
     }
 
     public void fillPassword(String password) {
-        page.fill(SELECTOR_PASSWORD, password);
+        for (String sel : SELECTORS_PASSWORD) {
+            try {
+                com.microsoft.playwright.Locator locator = page.locator(sel);
+                if (locator.count() > 0) {
+                    locator.first().waitFor(new com.microsoft.playwright.Locator.WaitForOptions()
+                            .setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE).setTimeout(10000));
+                    locator.first().fill(password);
+                    return;
+                }
+            } catch (Exception ignored) {
+            }
+        }
+        page.fill(SELECTORS_PASSWORD[0], password);
     }
 
     public void submit() {
-        page.click(SELECTOR_SUBMIT);
+        for (String sel : SELECTORS_SUBMIT) {
+            try {
+                com.microsoft.playwright.Locator locator = page.locator(sel);
+                if (locator.count() > 0) {
+                    locator.first().waitFor(new com.microsoft.playwright.Locator.WaitForOptions()
+                            .setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE).setTimeout(5000));
+                    locator.first().click(new com.microsoft.playwright.Locator.ClickOptions().setTimeout(10000));
+                    return;
+                }
+            } catch (Exception ignored) {
+            }
+        }
+        page.click(SELECTORS_SUBMIT[0]);
     }
 }

@@ -27,7 +27,7 @@ public class UsePlaywright implements Ability {
     }
 
     public static UsePlaywright createWithSystemProperties() {
-        boolean headless = Boolean.parseBoolean(System.getProperty("playwright.headless", "false"));
+        boolean headless = Boolean.parseBoolean(System.getProperty("playwright.headless", "true"));
         int slowMo = Integer.parseInt(System.getProperty("playwright.slowMo", "0"));
         String channel = System.getProperty("playwright.channel", null);
         String recordDir = System.getProperty("playwright.recordVideoDir", null);
