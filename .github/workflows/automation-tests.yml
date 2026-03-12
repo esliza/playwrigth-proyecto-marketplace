@@ -99,12 +99,29 @@ jobs:
       - name: Run tests (headless)
         run: mvn -B clean test -Dplaywright.headless=true -Dplaywright.enableRecording=false -DbaseUrl=${BASE_URL}
 
-      - name: Upload Allure Results
-        if: always()
+      - name: Upload Allure results
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: allure-results
           path: target/allure-results
+
+      - name: Install Allure CLI
+        if: always()
+        run: |
+          npm install -g allure-commandline --save-dev
+
+      - name: Generate Allure Report
+        if: always()
+        run: |
+          allure generate target/allure-results --clean -o allure-report
+
+      - name: Upload Allure report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-report
+          path: allure-report
 
       - name: Upload Surefire reports
         if: always()
@@ -112,3 +129,10 @@ jobs:
         with:
           name: surefire-reports
           path: target/surefire-reports
+
+      - name: Deploy Allure Report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./allure-report
